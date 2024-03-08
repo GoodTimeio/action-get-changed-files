@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/GoodTimeio/action-get-changed-files/compare/v2.3.0...v2.3.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* actions ([7e666c0](https://github.com/GoodTimeio/action-get-changed-files/commit/7e666c02568e656d6382d1445b6081da5b245044))
+
 ## 1.0.0 (2024-03-08)
 
 
