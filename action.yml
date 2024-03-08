@@ -1,13 +1,13 @@
-name:        'Get Changed Files'
-description: 'Saves lists of changed files as JSON for use by other actions.'
-author:      'Dustin Falgout <dustin@falgout.us>'
+name: "Get Changed Files"
+description: "Saves lists of changed files as JSON for use by other actions."
+author: "GoodTime Engineering <eng@goodtime.io>"
 runs:
-  using: 'node16'
-  main:  'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
 inputs:
   token:
     description: GitHub Personal Access Token
-    required:    true
+    required: true
 outputs:
   all:
     description: JSON array of all changed files that weren't removed
@@ -20,5 +20,5 @@ outputs:
   removed:
     description: JSON array of removed files
 branding:
-  icon:  'search'
-  color: 'gray-dark'
+  icon: "search"
+  color: "gray-dark"

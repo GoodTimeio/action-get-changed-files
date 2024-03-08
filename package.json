@@ -3,14 +3,127 @@
   "version": "2.2.2",
   "private": true,
   "main": "dist/index.js",
-  "scripts":{
-    "build": "ncc build index.js -o dist"
+  "scripts": {
+    "build": "ncc build index.js -o dist",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@actions/core": "1.10.0",
+    "@actions/core": "^1.10.1",
     "@actions/github": "5.1.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "0.36.1"
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^11.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.6",
+    "@semantic-release/release-notes-generator": "^12.1.0",
+    "@vercel/ncc": "^0.38.1",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
+    "semantic-release": "^23.0.2"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "next",
+        "prerelease": true,
+        "channel": "next"
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "type": "docs",
+              "scope": "README.md",
+              "release": "patch"
+            },
+            {
+              "type": "refactor",
+              "release": "patch"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "feat": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "perf",
+              "release": "patch"
+            },
+            {
+              "type": "revert",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalCommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "perf",
+                "section": "Performance Improvements"
+              },
+              {
+                "type": "revert",
+                "section": "Reverts"
+              },
+              {
+                "type": "docs",
+                "section": "Documentation",
+                "hidden": false
+              },
+              {
+                "type": "style",
+                "section": "Styles",
+                "hidden": false
+              },
+              {
+                "type": "chore",
+                "section": "Chores",
+                "hidden": false
+              },
+              {
+                "type": "refactor",
+                "section": "Code Refactors",
+                "hidden": false
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ],
+    "prepare": [
+      "@semantic-release/changelog",
+      {
+        "path": "@semantic-release/git",
+        "assets": [
+          "package.json",
+          "package-lock.json",
+          "CHANGELOG.md"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
   }
 }

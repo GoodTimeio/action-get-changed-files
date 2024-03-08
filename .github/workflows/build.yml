@@ -1,0 +1,40 @@
+name: action-build
+
+on:
+  push:
+    branches:
+      - main
+      - next
+    paths-ignore:
+      - "dist/**"
+      - "README.md"
+      - CHANGELOG.md
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_GOODBOT_TOKEN }}
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+      - name: Install Packages
+        run: yarn install
+      - run: yarn build
+      # - run: |
+      #     git config user.name 'goodtimegoodbot'
+      #     git config user.email 'goodbot@goodtime.io'
+      #     git add dist
+      #     git commit -m "chore: update dist"
+      #     git push
+      - name: Release
+        env:
+          FONTAWESOME_NPM_TOKEN: ${{ secrets.FONTAWESOME_NPM_TOKEN }}
+          GOODTIME_NPM_TOKEN: ${{ secrets.GOODTIME_NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_GOODBOT_TOKEN }}
+        run: yarn semantic-release
